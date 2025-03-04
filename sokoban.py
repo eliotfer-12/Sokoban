@@ -10,9 +10,8 @@ for ligne in play_boardbis:
     play_board.append(a)
 
 def getPlayerPosition():
-    print(play_board)
-    x=0
-    y=0
+    x=-1
+    y=-1
     for ligne in play_board :
         y+=1
         for el in ligne :
@@ -26,7 +25,7 @@ def getPlayerPosition():
 def isEmpty (position):
     x=position[0]
     y=position[1]
-    if play_board[y][x]== '-' or '.':
+    if play_board[y][x]== '-' or play_board[y][x]=='.':
         return True
     
     return False
@@ -34,14 +33,16 @@ def isEmpty (position):
 def isBox (position):
     x=position[0]
     y=position[1]
-    if play_board[y][x]== '$' or '*':
+    if play_board[y][x]== '$' or play_board[y][x]=='*':
         return True
     
     return False
 
 def Printboard ():
-    for i in range (0,len(play_boardbis)):
-        print(play_boardbis[i])
+    for ligne in play_board:
+        for el in ligne :
+            print(el,end="")
+        print("",end="\n")
 
 
 def player_box_movement () :
@@ -60,6 +61,8 @@ def player_box_movement () :
     elif command=="d":
         x,y = d+1, v
         goal2=x+1,y
+    elif command=="q":
+        return "Quit"
     else :
         return "action invalide, donne w a s ou d"
 
@@ -82,22 +85,24 @@ def player_box_movement () :
         return "Tu es face à un mur"
     
     if isBox(position):
-        play_board[d][v]="."
+        play_board[v][d]="."
     else :
-        play_board[d][v]="-"
+        play_board[v][d]="-"
 
     return "OK"
 
 
-b=4
-while b!=0:
+while True:
     action=player_box_movement()
     if action=="OK":
         Printboard()
+    elif action=="Quit":
+        print("La partie est terminée")
+        break
     else:
         print(action)
         continue
-    b=b-1
+    
 
 
 
