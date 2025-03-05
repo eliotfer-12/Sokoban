@@ -11,16 +11,10 @@ class SokobanModel :
         return self.board 
 
     def getPlayerPosition(self):
-        x=-1
-        y=-1
-        for ligne in self.board :
-            y+=1
-            for el in ligne :
-                if x==19:
-                    x=0
-                x+=1
-                if el=='@' :
-                    self.position=x,y
+        for k in range(len(self.board)) :
+            for i in range(len(self.board[k])) :
+                if self.board[k][i]=='@' or self.board[k][i]=='*' :
+                    self.position=i,k
                     return self.position
 
     def isEmpty (self, position):
@@ -45,24 +39,29 @@ class SokobanModel :
         goal2 = x+2*dx, y+2*dy 
 
         if self.isEmpty(goal) :
-            self.board[y][x]= "@"
+            if self.board[v][d]== "-":
+                self.board[v][d]="@"
+            else :
+                self.board[v][d]="*"
             
         elif self.isBox(goal):
             if self.isEmpty(goal2):
                 a,b=goal2
-                self.board[y][x]="@"
+                self.board[v][d]="@"
                 self.board[b][a]="$"
                 
             else :
                 return "la box que tu veux déplacer est face à un mur"
+            
+        
         
         else :
             return "Tu es face à un mur"
         
         if self.isBox(position):
-            self.board[v][d]="."
+            self.board[y][x]="."
         else :
-            self.board[v][d]="-"
+            self.board[y][x]="-"
 
         return "OK"
     
@@ -72,7 +71,7 @@ class SokobanView :
     def __init__(self):
         self.play_board=[]
     def print (self,model):
-        for ligne in model:
+        for ligne in model.board:
             for el in ligne :
                 print(el,end="")
             print("",end="\n")
@@ -119,6 +118,7 @@ class SokobanController :
 
 sokoban = SokobanController()
 sokoban.readfile("level1.xsb")
+sokoban.loop()
 
 
 
